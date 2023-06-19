@@ -1,0 +1,35 @@
+<div class="flex flex-col min-h-screen">
+  <div class="flex-grow overflow-y-auto pb-24 sm:pb-6">
+    <router-outlet></router-outlet>
+  </div>
+  <header class="bg-gray-900 fixed bottom-0 w-full sm:static sm:order-first">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 px-8" aria-label="Global">
+      <div class="flex flex-1">
+        <a routerLink="/home" class="-m-1.5 p-1.5">
+          <span class="hidden sm:inline h-2 text-white font-extrabold">AILift</span>
+          <img class="w-8 h-8 ml-2 sm:hidden" src="../../../../assets/images/ailift-logo.png" alt="logo">
+        </a>
+      </div>
+      <div class="flex gap-x-12 sm:gap-x-12">
+        <a routerLink="/home" class="text-xs sm:text-sm font-semibold leading-6 text-white flex items-center">
+          <span class="hidden sm:inline">Home</span>
+          <span class="material-icons sm:hidden text-xl ml-1">home</span>
+        </a>
+        <a routerLink="/routines" class="text-xs sm:text-sm font-semibold leading-6 text-white flex items-center">
+          <span class="hidden sm:inline">Routines</span>
+          <span class="material-icons sm:hidden text-xl ml-1">fitness_center</span>
+        </a>
+        <a routerLink="/exercises" class="text-xs sm:text-sm font-semibold leading-6 text-white flex items-center">
+          <span class="hidden sm:inline">Exercises</span>
+          <span class="material-icons sm:hidden text-xl ml-1">list</span>
+        </a>
+      </div>
+      <div class="flex flex-1 justify-end">
+        <a class="text-xs sm:text-sm font-semibold leading-6 text-white c-pointer flex items-center" (click)="logout()">
+          <span class="hidden sm:inline">Log out</span>
+          <span class="material-icons sm:hidden text-xl ml-1">logout</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+</div>

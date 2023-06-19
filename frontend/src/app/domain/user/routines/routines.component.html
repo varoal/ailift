@@ -1,0 +1,86 @@
+<div class="bg-gray-900 py-2 px-4 sm:hidden">
+  <p class="text-white font-semibold text-center">Routines</p>
+</div>
+<div class='px-4 sm:px-6 lg:px-8 mx-auto mt-10 md:max-w-7xl'>
+  <div class='grid grid-cols-1 gap-x-6'>
+    <div>
+      <div class='flex sm:flex-row justify-between items-start sm:items-center'>
+        <h1 class='text-2xl font-bold mb-3 sm:mb-0'>{{'Routines'}}</h1>
+        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' (click)='newRoutine()'>
+          New Routine
+        </button>
+      </div>
+      <div class='mt-6 gap-x-6'>
+        <ul role='list'>
+          <li class='flex justify-between gap-x-6 py-5 border-2 px-5 border-gray-300 rounded bg-white'
+              *ngIf='routines.length === 0'>
+            <p>{{'You have no routines'}}</p>
+          </li>
+          <ng-container *ngIf='routines.length > 0'>
+            <li *ngFor='let routine of routines; let i = index'
+            class='grid grid-cols-1 sm:grid-cols-3 gap-x-6 py-5 border-2 px-5 border-gray-300 rounded my-3 bg-white'>
+          <div class='mb-3 sm:mb-0'>
+            <p class='text-lg font-bold text-center sm:text-left'>{{routine.name}}</p>
+            <p class='text-sm text-gray-500 truncate overflow-ellipsis text-center sm:text-left'
+               title='{{routine.description}}'>{{routine.description}}</p>
+          </div>
+          <div class='text-center mb-3 sm:mb-0'>
+            <p class='text-lg font-bold'>{{routine.exercises.length}}</p>
+            <p class='text-sm text-gray-500'>{{'Exercises'}}</p>
+          </div>
+              <div>
+                <div class='flex relative text-center sm:text-left justify-center sm:justify-end'>
+                  <ng-container *ngIf='checkActiveWorkOut(routine.id)'>
+                    <button
+                      class='bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-1 px-2 border border-indigo-700 rounded flex justify-around mr-3'
+                      (click)='navigateToActiveWorkout()'>
+                      <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5'
+                           stroke='currentColor' class='w-6 h-6'>
+                        <path stroke-linecap='round' stroke-linejoin='round'
+                              d='M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z' />
+                      </svg>
+                      Continue workout
+                    </button>
+                  </ng-container>
+                  <ng-container *ngIf='!activeWorkout'>
+                    <button
+                      class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 border border-green-700 rounded flex justify-around mr-3'
+                      (click)='startWorkout(routine.id)'>
+                      Start Workout
+                    </button>
+                  </ng-container>
+                  <div>
+                    <button type='button' (click)='toogleDropdown(i)'
+                            class='inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                            id='menu-button' aria-expanded='true' aria-haspopup='true'>
+                      <span>{{'Edit'}}</span>
+                      <svg class='-mr-1 h-5 w-5 text-gray-400' viewBox='0 0 20 20' fill='currentColor'
+                           aria-hidden='true'>
+                        <path fill-rule='evenodd'
+                              d='M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z'
+                              clip-rule='evenodd' />
+                      </svg>
+                    </button>
+                  </div>
+                  <div id='dropdown-{{i}}'
+                       class='hidden absolute right-0 z-10 mt-7 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
+                       role='menu' aria-orientation='vertical' aria-labelledby='menu-button' tabindex='-1'>
+                    <div class='py-1' role='none'>
+                      <span class='text-gray-700 block px-4 py-2 text-sm c-pointer' role='menuitem' tabindex='-1'
+                            (click)='editRoutine(routine.id)'
+                            id='menu-item-1'>Edit routine</span>
+                      <span class='text-red-700 block px-4 py-2 text-sm c-pointer' role='menuitem' tabindex='-1'
+                            (click)='removeRoutine(routine.id)'
+                            id='menu-item-0'>Remove routine</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <app-action-confirmation-modal #actionConfirmationModal></app-action-confirmation-modal>
+</div>

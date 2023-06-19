@@ -1,0 +1,131 @@
+<div class="bg-gray-900 py-2 px-4 sm:hidden">
+  <p class="text-white font-semibold text-center">Home</p>
+</div>
+<div>
+  <div class='px-4 sm:px-6 lg:px-8 mx-auto mt-10 md:max-w-7xl'>
+    <div class='mx-auto text-center md:max-w-7xl'>
+      <div class='mt-10 gap-x-6 bg-white'>
+        <ul role='list' class='divide-y divide-gray-100'>
+          <li class='flex items-start gap-x-6 py-5 border-2 px-5 border-gray-300 rounded'>
+            <div class='flex-none'>
+              <img class='h-16 w-16 rounded-full bg-gray-50'
+                   src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairTheCaesar&accessoriesType=Blank&hairColor=Blonde&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=AngryNatural&mouthType=Default&skinColor=Light'
+                   alt=''>
+            </div>
+            <div class='mt-2 md:mt-0 min-w-0 flex-auto'>
+              <p class='text-md font-semibold leading-6 text-gray-900'>{{user.username}}</p>
+              <p class='mt-1 text-sm leading-6 text-gray-900'>{{user.description}}</p>
+              <p class='mt-1 text-sm leading-5 text-gray-500'>Last workout was {{getLastWorkoutDate()}}
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <div class='px-4 sm:px-6 lg:px-8 mx-auto mt-10 md:max-w-7xl'>
+    <div class='grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6'>
+      <div>
+        <h1 class='text-2xl font-bold'>{{'Recent Workouts'}}</h1>
+        <div class='mt-5 gap-x-6'>
+          <ul role='list' class='divide-y divide-gray-100' *ngIf='lastWeekWorkouts.length  === 0'>
+            <li class='flex justify-between gap-x-6 py-5 border-2 px-5 border-gray-300 rounded'>
+              <p>{{'You have no recent Workouts'}}</p>
+            </li>
+          </ul>
+          <ul role='list' class='grid grid-cols-1' *ngIf='lastWeekWorkouts.length > 0'>
+            <li class='col-span-1 border-2 px-5 border-gray-300 rounded bg-white shadow my-1.5'
+                *ngFor='let workout of lastWeekWorkouts '>
+              <div class='flex w-full items-center justify-between space-x-6 py-3'>
+                <div>
+                  <img class='h-10 w-10 flex-shrink-0 rounded-full bg-gray-300'
+                       src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairTheCaesar&accessoriesType=Blank&hairColor=Blonde&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=AngryNatural&mouthType=Default&skinColor=Light'
+                       alt=''>
+                </div>
+                <div class='flex-1 truncate'>
+                  <div class='flex items-center space-x-3'>
+                    <h3 class='truncate text-sm font-medium text-gray-900'>{{user.username}}</h3>
+                    <span
+                      class='inline-flex flex-shrink-0 items-center rounded-full bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-600/20'>{{getHowManyDaysAgo(workout)}}</span>
+                  </div>
+                  <p class='mt-1 truncate text-sm text-gray-500'>{{user.description}}</p>
+                </div>
+              </div>
+              <div class='px-1.5 py-1'>
+                <h2 class='text-md font-semibold'>{{workout.name}}</h2>
+                <div class='grid grid-cols-2 my-1.5'>
+                  <div>
+                    <p class='text-sm text-gray-400'>Time</p>
+                    <p>{{getWorkoutDuration(workout)}}</p>
+                  </div>
+                  <div>
+                    <p class='text-sm text-gray-400'>Volume</p>
+                    <p>{{workout.volume }} Kg</p>
+                  </div>
+                </div>
+              </div>
+              <hr class='my-1'>
+              <div class='px-1.5 py-1'>
+                <h2 class='text-md font-semibold'>Exercises</h2>
+                <p class='my-1.5 p-3 bg-indigo-100 text-indigo-500 rounded text-sm'
+                   *ngIf='workout.exercises.length > 1'>
+                  {{workout.showTotalExercises ? 'Showing all exercises' : 'Showing 1 of ' + workout.exercises.length + ' exercises'}}
+                  <span class='font-semibold c-pointer'
+                        (click)='toggleExercisesVisibility(workout)'>{{workout.showTotalExercises ? 'Show less' : 'Show more'}}</span>
+                </p>
+
+                <div class='flex w-full items-center justify-between space-x-6 py-3'
+                     *ngFor='let exercise of (workout.exercises | slice: 0 : workout.showTotalExercises ? (workout.exercises.length): 1)'>
+                  <div>
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'
+                         class='h-10 w-10 rounded-full bg-gray-100 p-1'>
+                      <path
+                        d='M100,43h-7.086c-0.393-2.083-2.22-4-4.416-4h-3C85.327,39,85,38.366,85,38.385v-6.551  C85,29.353,82.979,27,80.498,27h-7C71.017,27,69,29.353,69,31.834V43H31V31.834C31,29.353,28.979,27,26.498,27h-7  C17.017,27,15,29.353,15,31.834v6.613C15,38.428,14.669,39,14.498,39h-3c-2.174,0-3.993,1.947-4.409,4H0v14h7.008  c0.057,2.433,2.044,4,4.49,4h3C14.669,61,15,61.365,15,61.346v7.488C15,71.315,17.017,73,19.498,73h7C28.979,73,31,71.315,31,68.834  V57h38v11.834C69,71.315,71.017,73,73.498,73h7C82.979,73,85,71.315,85,68.834v-7.551C85,61.302,85.327,61,85.498,61h3  c2.425,0,4.394-1.597,4.483-4H100V43z M4,47h3v6H4V47z M15,56.5c0,0.276-0.224,0.5-0.5,0.5h-3c-0.276,0-0.5-0.224-0.5-0.5v-13  c0-0.276,0.224-0.5,0.5-0.5h3c0.276,0,0.5,0.224,0.5,0.5V56.5z M27,68.834C27,69.105,26.769,69,26.498,69h-7  C19.227,69,19,69.105,19,68.834V56.896v-13V31.834C19,31.563,19.227,31,19.498,31h7C26.769,31,27,31.563,27,31.834V68.834z M31,53  v-6h38v6H31z M81,68.834C81,69.105,80.769,69,80.498,69h-7C73.227,69,73,69.105,73,68.834v-37C73,31.563,73.227,31,73.498,31h7  C80.769,31,81,31.563,81,31.834v12v13V68.834z M89,56.5c0,0.276-0.224,0.5-0.5,0.5h-3c-0.276,0-0.5-0.224-0.5-0.5v-13  c0-0.276,0.224-0.5,0.5-0.5h3c0.276,0,0.5,0.224,0.5,0.5V56.5z M96,53h-3v-6h3V53z'
+                        fill='#231F20' />
+                    </svg>
+                  </div>
+                  <div class='flex-1 truncate'>
+                    <div class='flex items-center space-x-3'>
+                      <h3 class='truncate text-sm font-medium text-gray-900'>{{exercise.exercise.name}}</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h1 class='text-2xl font-bold'>{{'Statistics'}}</h1>
+        <div class='mt-5 gap-x-6 bg-white border-2 px-5 border-gray-300 rounded'>
+          <ul role='list'>
+            <li class='my-3 flex justify-center'>
+              <div class='isolate inline-flex -space-x-px rounded-md shadow-sm' aria-label='Pagination'>
+                <span (click)='setCurrentGraphFilter(1)'
+                      [ngClass]='{"bg-indigo-500 text-white": this.selectedGraphFilter === 1, "hover:bg-gray-50": this.selectedGraphFilter !== 1}'
+                      class='c-pointer relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0'>Volume</span>
+                <span (click)='setCurrentGraphFilter(2)'
+                      [ngClass]='{"bg-indigo-500 text-white": this.selectedGraphFilter === 2, "hover:bg-gray-50": this.selectedGraphFilter !== 2}'
+                      class='c-pointer relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-20 focus:outline-offset-0'>Reps</span>
+<!--                <span (click)='setCurrentGraphFilter(3)'-->
+<!--                      [ngClass]='{"bg-indigo-500 text-white": this.selectedGraphFilter === 3, "hover:bg-gray-50": this.selectedGraphFilter !== 3}'-->
+<!--                      class='c-pointer relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'>Max</span>-->
+              </div>
+            </li>
+            <li class='flex justify-between gap-x-6 py-5'>
+              <canvas baseChart
+                      [data]='barChartData'
+                      [options]='barChartOptions'
+                      [plugins]='barChartPlugins'
+                      [legend]='barChartLegend'
+                      [type]="'bar'">
+              </canvas>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

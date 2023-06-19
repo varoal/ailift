@@ -1,0 +1,37 @@
+version: '3'
+services:
+  backend-ailift:
+    build:
+      context: .
+      dockerfile: Docker/express4.18.2/Dockerfile
+    user: "1000:1000"
+    restart: unless-stopped
+    container_name: ailift-backend
+    working_dir: /src
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/src
+
+  frontend-ailift:
+    build:
+      context: .
+      dockerfile: Docker/node/Dockerfile
+    user: "1000:1000"
+    restart: unless-stopped
+    container_name: ailift-frontend
+    working_dir: /app
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+networks:
+  ailift-app-network:
+    driver: bridge

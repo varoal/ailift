@@ -1,0 +1,117 @@
+<div class="bg-gray-900 py-2 px-4 sm:hidden">
+  <p class="text-white font-semibold text-center">Routines</p>
+</div>
+<div class='px-4 sm:px-6 lg:px-8 mx-auto mt-10 md:max-w-7xl'>
+  <div>
+    <ngx-ui-loader [loaderId]='"create-routine"'
+                   [bgsType]='"wandering-cubes"'
+                   text='Creating routine...'
+                   [bgsPosition]='"center-center"'
+                   [fgsSize]='60'>
+    </ngx-ui-loader>
+  </div>
+  <div class='grid grid-cols-1 sm:grid-cols-[70%_30%] gap-x-6'>
+    <div>
+      <div class='flex justify-between'>
+        <div class='flex items-center'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 c-pointer mr-3" (click)='navigateBack()'>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+
+          <h1 class='text-2xl font-bold'>{{'Create routine'}}</h1>
+        </div>
+        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' (click)='createRoutine()'>
+          Save routine
+        </button>
+      </div>
+      <div class='bg-white mt-6 px-5 py-5' [formGroup]='routineForm'>
+        <div>
+          <label for='title' class='block text-sm font-medium leading-6 text-gray-900'>Name</label>
+          <div class='mt-2'>
+            <input type='text' name='title' id='title' formControlName='name'
+                   class='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2'>
+          </div>
+        </div>
+        <div>
+          <label for='description' class='block text-sm font-medium leading-6 text-gray-900'>Description</label>
+          <div class='mt-2'>
+            <textarea id='description' name='description' rows='7' formControlName='description'
+                      class='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2'></textarea>
+          </div>
+        </div>
+
+        <ng-container *ngIf='getExercisesFormArray().length > 0'>
+          <div class='mt-5' formArrayName='exercises'>
+            <h1 class='text-xl font-bold mt-4'>Exercises</h1>
+            <div *ngFor='let exercice of getExercisesFormArray().controls; let i = index;' [formGroupName]='i'>
+              <div class='flex flex-col sm:flex-row justify-between items-start sm:items-center'>
+                <div class='flex justify-between w-full sm:w-auto'>
+                  <h1 class='text-xl mt-3 mr-3'>{{exercice.get('name')?.value}}</h1>
+                  <div>
+                    <select id='location' formControlName='progressionType'
+                            class='mt-3 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6'>
+                      <option ngValue='free'>Free</option>
+                      <option ngValue='linear'>Linear</option>
+                    </select>
+                  </div>
+                  <button *ngIf="exercice.get('isEditable')?.value" class='mt-2 ml-2' (click)='openLinearProgressionModal(exercice)'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+
+                  </button>
+                </div>
+                <button class='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-3 sm:mt-0'
+                        (click)='removeExercise(exercice)'>
+                  remove
+                </button>
+              </div>
+              <ng-container formArrayName='sets'>
+                <div class='flex justify-between items-center my-2 space-x-4 mb-5'
+                     *ngFor='let set of getSetsOfExerciseFormArray(exercice).controls; let j = index;'
+                     [formGroupName]='j'>
+                  <div>
+                    <div class='mt-2'>
+                      <h2>{{'Set ' + (j + 1)}}</h2>
+                    </div>
+                  </div>
+                  <div class="flex space-x-4">
+                  <div class='flex-1 px-2'>
+                    <label for='title' class='block text-sm font-medium leading-6 text-gray-900'>Weight</label>
+                    <div class='mt-2'>
+                      <input type='number' name='weight' id='weight' formControlName='weight'
+                             class='block w-20 sm:w-40 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2'>
+                    </div>
+                  </div>
+                  <div class='flex-1 px-2'>
+                    <label for='title' class='block text-sm font-medium leading-6 text-gray-900'>Reps</label>
+                    <div class='mt-2'>
+                      <input type='text' name='reps' id='reps' formControlName='reps'
+                             class='block w-20 sm:w-40 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2'>
+                    </div>
+                  </div>
+                  <div class='flex items-center justify-end pt-6' (click)='removeSet(exercice, set)' *ngIf="exercice.get('progressionType')?.value !== 'linear'">
+                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5'
+                         stroke='currentColor' class='w-6 h-6 c-pointer'>
+                      <path stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12' />
+                    </svg>
+                  </div>
+                </div>
+                </div>
+                <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' *ngIf="exercice.get('progressionType')?.value !== 'linear'"
+                        (click)='addSetToExercise(exercice)'>
+                  add set
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class='mt-8'>
+      <app-exercises (addExerciseEvent)='addExerciseToRoutine($event)'></app-exercises>
+    </div>
+  </div>
+</div>
+<app-linear-exercise-modal #linearExerciseModal></app-linear-exercise-modal>

@@ -1,0 +1,72 @@
+<div class="bg-gray-900 py-2 px-4 sm:hidden">
+  <p class="text-white font-semibold text-center">Workout</p>
+</div>
+<div class='px-4 sm:px-6 lg:px-8 mx-auto mt-10 md:max-w-7xl'>
+  <div class='grid grid-cols-1 gap-x-6'>
+    <div>
+      <div class='flex justify-between'>
+        <div class='flex items-center'>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 c-pointer mr-3" (click)='navigateBack()'>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+          </svg>
+          <h1 class='text-2xl font-bold'>{{workout.name}}</h1>
+        </div>
+        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' (click)='finishWorkout()'>
+          Finish
+        </button>
+      </div>
+      <p class='mt-3'>{{workout.description}}</p>
+      <div class='bg-white mt-6 px-5 py-5' [formGroup]='workoutForm'>
+        <div class='flex justify-center'>
+          <p class='text-3xl border max-w-sm px-4 py-3 rounded border-black font-bold'>{{timer}}</p>
+        </div>
+
+        <ng-container *ngIf='getExercisesFormArray().length > 0'>
+          <div class='mt-5' formArrayName='exercises'>
+            <h1 class='text-xl font-bold mt-4'>Exercises</h1>
+            <div *ngFor='let exercise of getExercisesFormArray().controls; let i = index;' [formGroupName]='i'>
+              <div class='flex justify-between'>
+                <h1
+                  class='text-xl mt-3'>{{exercise.get('name')?.value + ' (' + (exercise.get('progressionType')?.value === 'linear' ? 'Linear)' : 'Free)')}}</h1>
+              </div>
+              <ng-container formArrayName='sets'>
+                <div class='grid grid-cols-4 items-center my-2'
+                     *ngFor='let set of getSetsOfExerciseFormArray(exercise).controls; let j = index;'
+                     [formGroupName]='j'>
+                  <div>
+                    <div class='mt-2'>
+                      <h2>{{'Set ' + (j + 1)}}</h2>
+                    </div>
+                  </div>
+                  <div class='flex-1 px-2'>
+                    <label for='weight{{j}}' class='block text-sm font-medium leading-6 text-gray-900'>Weight</label>
+                    <div class='mt-2'>
+                      <input type='number' name='weight{{j}}' id='weight{{j}}' formControlName='weight' [ngClass]='{"pointer-events-none": exercise.get("progressionType")?.value === "linear"}'
+                             class='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2'>
+                    </div>
+                  </div>
+                  <div class='flex-1 px-2'>
+                    <label for='reps{{j}}' class='block text-sm font-medium leading-6 text-gray-900'>Reps</label>
+                    <div class='mt-2'>
+                      <input type='text' name='reps{{j}}' id='reps{{j}}' formControlName='reps'
+                             class='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-2'>
+                    </div>
+                  </div>
+                  <div class='flex justify-center align-middle mt-7'>
+                    <input type='checkbox' class='accent-indigo-300 focus:accent-indigo-500 h-6 w-6'
+                           formControlName='isDone'>
+                  </div>
+                </div>
+                <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' *ngIf='exercise.get("progressionType")?.value !== "linear"'
+                        (click)='addSetToExercise(exercise)'>
+                  add set
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
