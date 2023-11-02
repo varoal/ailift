@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 services:
   backend-ailift:
     build:
       context: .
       dockerfile: Docker/express4.18.2/Dockerfile
-    user: "1000:1000"
+    user: node
     restart: unless-stopped
     container_name: ailift-backend
     working_dir: /src
@@ -12,25 +12,58 @@ services:
       - "3000:3000"
     volumes:
       - ./backend:/src
+      - /src/node_modules
+    networks:
+      - ailift-app-network
+    environment:
+      POSTGRES_USER: ailiftuser
+      POSTGRES_PASSWORD: ailiftpassword
+      POSTGRES_DB: ailiftdb
+      MAILHOG_HOST: mailhog
+      EMAIL_USERNAME: auth@ailift.com
+      API_URL: http://localhost:3000
+      FRONT_URL: http://localhost:4200
+      JWT_SECRET: random_secret
+    depends_on:
+      - db
 
   frontend-ailift:
     build:
       context: .
       dockerfile: Docker/node/Dockerfile
-    user: "1000:1000"
-    restart: unless-stopped
+    user: "node"
     container_name: ailift-frontend
     working_dir: /app
     ports:
       - "4200:4200"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
 
   mailhog:
     image: mailhog/mailhog
     ports:
       - "8025:8025"
       - "1025:1025"
+    networks:
+      - ailift-app-network
+
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ailiftuser
+      POSTGRES_PASSWORD: ailiftpassword
+      POSTGRES_DB: ailiftdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ailift-app-network
+
+volumes:
+  postgres_data:
 
 networks:
   ailift-app-network:

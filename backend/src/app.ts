@@ -23,14 +23,12 @@ import dotenv from "dotenv";
 import { Token } from "./entity/Token";
 import { ValidationException } from "./utils/HttpException";
 import { WorkoutSet } from "./entity/WorkoutSet";
-import { SetController } from "./controllers/SetController";
 import { setRouter } from "./routes/set.routes";
 import { workoutRouter } from "./routes/workout.routes";
-import { workoutExerciseRouter } from "./routes/workoutExercise.routes";
-import { workoutSetRouter } from "./routes/workoutSet.routes";
 import RoutineExerciseService from "./services/RoutineExerciseService";
 import SetService from "./services/SetService";
 import { userStatsRouter } from "./routes/userStats.routes";
+import { seedDatabase } from "./seeding/seedDatabase";
 
 dotenv.config();
 const cors = require("cors");
@@ -60,9 +58,9 @@ export const dataSource = new DataSource({
   logger: "advanced-console",
   logging: false,
   port: 5432,
-  username: "postgres",
+  username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
-  database: "ailift",
+  database: process.env.POSTGRES_DB,
   entities: [
     User,
     Exercise,
@@ -80,8 +78,11 @@ export const dataSource = new DataSource({
 });
 dataSource
   .initialize()
-  .then(() => {
+  .then(async () => {
     console.log("Connected to the database");
+    if (process.env.NODE_ENV !== "production") {
+      await seedDatabase();
+    }
     const setService = new SetService(dataSource);
     const routineExerciseService = new RoutineExerciseService(
       dataSource,

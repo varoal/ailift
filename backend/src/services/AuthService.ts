@@ -16,7 +16,8 @@ export class AuthService {
   async register(
     username: string,
     email: string,
-    password: string
+    password: string,
+    description: string
   ): Promise<User> {
     const userRepository = this.dataSource.getRepository(User);
     const existingUser = await userRepository.findOne({ where: { email } });
@@ -38,6 +39,7 @@ export class AuthService {
       username,
       email,
       password: hashedPassword,
+      description
     });
     const savedUser = await userRepository.save(user);
 
@@ -99,7 +101,7 @@ export class AuthService {
 
   async sendVerificationEmail(user: User): Promise<void> {
     const token = await this.createToken(user, TokenType.Verification);
-    const verificationUrl = `${process.env.CLIENT_URL}/api/auth/verify?token=${token.token}`;
+    const verificationUrl = `${process.env.API_URL}/api/auth/verify?token=${token.token}`;
 
     await sendEmail(
       user,

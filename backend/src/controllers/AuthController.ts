@@ -25,8 +25,8 @@ export class AuthController {
     try {
       this.handleValidationErrors(req, res);
 
-      const { username, email, password } = req.body;
-      const user = await this.authService.register(username, email, password);
+      const { username, email, password, description } = req.body;
+      const user = await this.authService.register(username, email, password, description);
       res.json(user);
     } catch (error) {
       if (error instanceof ValidationException) {
@@ -72,7 +72,6 @@ export class AuthController {
 
       if (success) {
         res.redirect(`${process.env.FRONT_URL}/login?emailVerified=true`);
-        res.json({ message: "Email successfully verified" });
       } else {
         res.status(400).json({ message: "Invalid or expired token" });
       }

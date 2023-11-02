@@ -1,14 +1,20 @@
 FROM node:18.15-alpine
 
-RUN mkdir /src
-
-RUN chown 1000:1000 /src
+# Create the directory and set permissions
+RUN mkdir /src && chown node:node /src
 
 WORKDIR /src
 
+# Copy package.json and package-lock.json
 COPY backend/package.json backend/package-lock.json ./
-COPY backend/.env ./
 
+# Install dependencies
 RUN npm install --silent
+
+# Copy the rest of your application source code
+COPY backend/ ./
+
+# Switch to a non-root user
+USER node
 
 CMD ["npm", "start"]

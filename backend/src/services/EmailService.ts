@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-  host: "localhost",
+  host: process.env.MAILHOG_HOST,
   port: 1025,
 });
 
