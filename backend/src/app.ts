@@ -54,7 +54,7 @@ app.listen(PORT, () => {
 // Create the database connection
 export const dataSource = new DataSource({
   type: "postgres",
-  host: process.env.POSTGRES_DB_HOST,
+  host: process.env.POSTGRES_HOST,
   logger: "advanced-console",
   logging: false,
   port: 5432,

@@ -16,6 +16,7 @@ services:
     networks:
       - ailift-app-network
     environment:
+      POSTGRES_HOST: db
       POSTGRES_USER: ailiftuser
       POSTGRES_PASSWORD: ailiftpassword
       POSTGRES_DB: ailiftdb
