@@ -4,6 +4,22 @@
 
 AILift is a fitness application aimed at helping users plan and track their fitness journey with ease. It enables the creation of personalized workout routines, facilitates linear progression for strength training, and allows for tracking of workout performance.
 
+## Table of Contents
+
+- [Features](#features)
+- [Local Development Version](#local-development-version)
+  - [MailHog for Email Testing](#mailhog-for-email-testing)
+  - [Environment Variables](#environment-variables)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Initial Setup](#initial-setup)
+  - [Accessing the Application](#accessing-the-application)
+- [Usage](#usage)
+- [Future Plans](#future-plans)
+- [Versioning](#versioning)
+- [Support](#support)
+- [Contributing](#contributing)
+
 ## Features
 
 - **Routine Customization**: Users can create routines tailored to their fitness goals.
