@@ -7,11 +7,8 @@ import { ExercisesModule } from '../../../application/user/modules/exercises/exe
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
-
 @NgModule({
-  declarations: [
-    WorkoutsComponent,
-  ],
+  declarations: [WorkoutsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -27,5 +24,4 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     ReactiveFormsModule,
   ],
 })
-export class WorkoutsModule {
-}
+export class WorkoutsModule {}

@@ -12,7 +12,13 @@ export const userRouter = (dataSource: DataSource) => {
   const userController = new UserController(userService);
 
   userRouter.get("/:id", userController.getUserProfile.bind(userController));
-  userRouter.put("/:id", authMiddleware, updateUserValidationSchema, userController.updateUserProfile.bind(userController));
+  
+  userRouter.put(
+    "/:id",
+    authMiddleware,
+    updateUserValidationSchema,
+    userController.updateUserProfile.bind(userController)
+  );
 
   return userRouter;
 };

@@ -22,7 +22,7 @@
         >
           Log in to your account
         </h1>
-        <div
+        <form
           class="space-y-4 md:space-y-6"
           (ngSubmit)="login()"
           [formGroup]="loginForm"
@@ -42,6 +42,10 @@
               placeholder="name@company.com"
               required=""
             />
+            <div *ngIf="loginForm.get('email')?.errors && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
+              <p *ngIf="loginForm.get('email')?.errors?.['required']" class="text-red-500">Email is required.</p>
+              <p *ngIf="loginForm.get('email')?.errors?.['email']" class="text-red-500">Email must be valid.</p>
+            </div>
           </div>
           <div>
             <label
@@ -58,6 +62,10 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required=""
             />
+            <div *ngIf="loginForm.get('password')?.errors && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
+              <p *ngIf="loginForm.get('password')?.errors?.['required']" class="text-red-500">Password is required.</p>
+              <p *ngIf="loginForm.get('password')?.errors?.['minlength']" class="text-red-500">Password must be at least 6 characters long.</p>
+            </div>
           </div>
           <div class="flex items-center justify-between">
             <div class="flex items-start">
@@ -66,13 +74,13 @@
                   id="remember"
                   aria-describedby="remember"
                   type="checkbox"
+                  formControlName="remember"
                   class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-sky-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-sky-600 dark:ring-offset-gray-800"
-                  required=""
                 />
               </div>
               <div class="ml-3 text-sm">
                 <label for="remember" class="text-gray-500 dark:text-gray-300"
-                  >Remember me</label
+                  >Stay logged in</label
                 >
               </div>
             </div>
@@ -84,10 +92,10 @@
           </div>
           <button
             type="submit"
-            (click)="login()"
             class="w-full text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none focus:ring-sky-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-sky-600 dark:hover:bg-sky-700 dark:focus:ring-sky-800"
           >
-            Log in
+          <span *ngIf="!loading">Log in</span>
+          <span *ngIf="loading">Processing...</span>
           </button>
           <p class="text-sm font-light text-gray-700 dark:text-white">
             Don’t have an account yet?
@@ -106,7 +114,7 @@
               >MailHog</a
             >
           </p>
-        </div>
+        </form>
       </div>
     </div>
   </div>

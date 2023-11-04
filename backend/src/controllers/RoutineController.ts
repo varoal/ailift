@@ -27,19 +27,19 @@ export class RoutineController {
 
   async createRoutine(req: Request, res: Response): Promise<void> {
     try {
-      // res.locals.user should contain the authenticated user's information
       const user = res.locals.user;
-  
-      // Pass the user to the create method of the service
-      const createdRoutine = await this.routineService.create({...req.body, user});
-  
+
+      const createdRoutine = await this.routineService.create({
+        ...req.body,
+        user,
+      });
+
       res.status(201).json(createdRoutine);
     } catch (error) {
       console.error(error);
       res.status(400).json({ message: "Error creating routine", error });
     }
   }
-  
 
   async updateRoutine(req: Request, res: Response): Promise<void> {
     try {
@@ -51,11 +51,9 @@ export class RoutineController {
         return;
       }
       if (routine.user.id !== res.locals.user.id) {
-        res
-          .status(403)
-          .json({
-            message: "User does not have permission to update this routine",
-          });
+        res.status(403).json({
+          message: "User does not have permission to update this routine",
+        });
         return;
       }
 
@@ -82,9 +80,18 @@ export class RoutineController {
     } catch (error) {
       console.error(error);
       if (error === "Routine not found") {
-        res.status(404).json({ message: "Error deleting routine: Routine not found", error });
-      } else if (error === "User does not have permission to delete this routine") {
-        res.status(403).json({ message: "Error deleting routine: No permission", error });
+        res
+          .status(404)
+          .json({
+            message: "Error deleting routine: Routine not found",
+            error,
+          });
+      } else if (
+        error === "User does not have permission to delete this routine"
+      ) {
+        res
+          .status(403)
+          .json({ message: "Error deleting routine: No permission", error });
       } else {
         res.status(500).json({ message: "Error deleting routine", error });
       }

@@ -1,6 +1,6 @@
+import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import { User } from "../entity/User";
-import dotenv from "dotenv";
 
 dotenv.config();
 

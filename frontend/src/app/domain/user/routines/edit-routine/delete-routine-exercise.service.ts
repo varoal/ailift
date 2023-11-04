@@ -8,7 +8,6 @@ import { RoutineResponse } from '../create-routine/create-routine.service';
   providedIn: 'root',
 })
 export class DeleteRoutineExerciseService {
-
   private exercises: string = '';
 
   constructor(private httpClient: HttpClient) {
@@ -16,6 +15,8 @@ export class DeleteRoutineExerciseService {
   }
 
   public __invoke(routineExerciseId: string): Observable<any> {
-    return this.httpClient.delete<any>(this.exercises + '/' + routineExerciseId);
+    return this.httpClient.delete<any>(
+      this.exercises + '/' + routineExerciseId
+    );
   }
 }

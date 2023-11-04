@@ -38,12 +38,16 @@ export class WorkoutSetController {
   }
 
   async updateWorkoutSet(req: Request, res: Response): Promise<void> {
-    const id = req.params.setId; 
-    const { reps, weight } = req.body; 
+    const id = req.params.setId;
+    const { reps, weight } = req.body;
     console.log(req.params);
     console.log(req.body);
     try {
-      const updatedWorkoutSet = await this.workoutSetService.updateWorkoutSet(id, reps, weight);
+      const updatedWorkoutSet = await this.workoutSetService.updateWorkoutSet(
+        id,
+        reps,
+        weight
+      );
       res.json(updatedWorkoutSet);
     } catch (error) {
       res.status(500).json(error);

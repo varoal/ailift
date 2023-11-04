@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { ExerciseService } from "../services/ExerciseService";
-import { MuscleGroupService } from "../services/MuscleGroupService";
 import { Exercise } from "../entity/Exercise";
-import { DataSource } from "typeorm";
 
 export class InputExercise {
   name!: string;
@@ -33,7 +31,6 @@ export class ExerciseController {
     res.json(exercise);
   }
 
-  // SIEMPRE tipar las request y response :)
   async createExercise(
     req: Request<any, any, InputExercise>,
     res: Response<Exercise | ErrorResponse>

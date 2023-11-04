@@ -114,15 +114,6 @@ export class RoutineExerciseService {
     const createdRoutineExercise = await this.routineExerciseRepository.save(
       routineExercise
     );
-    // if (progressionType === ProgressionType.LINEAR) {
-    //   for (let i = 0; i < setsGoal; i++) {
-    //     await this.setService.createSet(
-    //       createdRoutineExercise.id,
-    //       repsGoal,
-    //       startWeight
-    //     );
-    //   }
-    // }
 
     const { sets: _, ...routineExerciseWithoutSets } = createdRoutineExercise;
     return routineExerciseWithoutSets;

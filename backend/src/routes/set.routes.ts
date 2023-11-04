@@ -10,9 +10,23 @@ export const setRouter = (dataSource: DataSource) => {
   const setService = new SetService(dataSource);
   const setController = new SetController(setService);
 
-  setRouter.post("/", authMiddleware, setController.createSet.bind(setController));
-  setRouter.put("/:id", authMiddleware, setController.updateSet.bind(setController));
-  setRouter.delete("/:id", authMiddleware, setController.deleteSet.bind(setController));
+  setRouter.post(
+    "/",
+    authMiddleware,
+    setController.createSet.bind(setController)
+  );
+  
+  setRouter.put(
+    "/:id",
+    authMiddleware,
+    setController.updateSet.bind(setController)
+  );
+
+  setRouter.delete(
+    "/:id",
+    authMiddleware,
+    setController.deleteSet.bind(setController)
+  );
 
   return setRouter;
 };

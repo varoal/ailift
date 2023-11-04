@@ -1,7 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Workout, WorkoutExercise } from './workout';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 import { AddWorkoutSetService } from './add-workout-set.service';
 import { MarkWorkoutSetAsDoneService } from './mark-workout-set-as-done.service';
 import { MarkWorkoutSetAsUndoneService } from './mark-workout-set-as-undone.service';
@@ -20,15 +26,17 @@ export class WorkoutsComponent implements OnInit, OnDestroy {
   public timer!: string;
   private intervalTimer!: any;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private formBuilder: FormBuilder,
-              private addWorkoutSetService: AddWorkoutSetService,
-              private markWorkoutSetAsDoneService: MarkWorkoutSetAsDoneService,
-              private markWorkoutSetAsUndoneService: MarkWorkoutSetAsUndoneService,
-              private finishWorkoutService: FinishWorkoutService,
-              private router: Router,
-              private toastr: ToastrService,
-              private updateWorkoutExerciseSetService: UpdateWorkoutExerciseSetService) {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private addWorkoutSetService: AddWorkoutSetService,
+    private markWorkoutSetAsDoneService: MarkWorkoutSetAsDoneService,
+    private markWorkoutSetAsUndoneService: MarkWorkoutSetAsUndoneService,
+    private finishWorkoutService: FinishWorkoutService,
+    private router: Router,
+    private toastr: ToastrService,
+    private updateWorkoutExerciseSetService: UpdateWorkoutExerciseSetService
+  ) {
     this.buildForm();
   }
 
@@ -68,13 +76,19 @@ export class WorkoutsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private fillSetsFormArray(exerciseFormControl: any, exercise: WorkoutExercise) {
+  private fillSetsFormArray(
+    exerciseFormControl: any,
+    exercise: WorkoutExercise
+  ) {
     const setsForm = exerciseFormControl.get('sets') as FormArray;
     exercise.sets.forEach((set) => {
       const setFormControl = this.formBuilder.group({
         id: set.id,
         reps: set.reps,
-        weight: new FormControl({ value: set.weight, disabled: exercise.progressionType === 'linear' }),
+        weight: new FormControl({
+          value: set.weight,
+          disabled: exercise.progressionType === 'linear',
+        }),
         isDone: set.isDone,
       });
       setsForm.push(setFormControl);
@@ -93,35 +107,43 @@ export class WorkoutsComponent implements OnInit, OnDestroy {
     this.createWorkoutSet(setFormControl, exerciseFormControl);
   }
 
-  public getSetsOfExerciseFormArray(exercise: AbstractControl<any>): FormArray<any> {
+  public getSetsOfExerciseFormArray(
+    exercise: AbstractControl<any>
+  ): FormArray<any> {
     return exercise.get('sets') as FormArray;
   }
 
   private createWorkoutSet(setFormControl: any, exerciseFormControl: any) {
     const sets = exerciseFormControl.get('sets') as FormArray;
-    this.addWorkoutSetService.__invoke(exerciseFormControl.value.id, setFormControl.value).subscribe({
-      next: (set) => {
-        setFormControl.patchValue({ id: set.id });
-        sets.push(setFormControl);
-        this.checkIfSetIsDone(setFormControl);
-      },
-    });
+    this.addWorkoutSetService
+      .__invoke(exerciseFormControl.value.id, setFormControl.value)
+      .subscribe({
+        next: (set) => {
+          setFormControl.patchValue({ id: set.id });
+          sets.push(setFormControl);
+          this.checkIfSetIsDone(setFormControl);
+        },
+      });
   }
 
   private checkIfSetIsDone(setFormControl: any): void {
     setFormControl.get('isDone').valueChanges.subscribe((isDone: boolean) => {
       if (isDone) {
-        this.markWorkoutSetAsDoneService.__invoke(setFormControl.value.id).subscribe({
-          next: (set) => {
-            setFormControl.patchValue({ routineSetId: set.routineSetId });
-          },
-        });
+        this.markWorkoutSetAsDoneService
+          .__invoke(setFormControl.value.id)
+          .subscribe({
+            next: (set) => {
+              setFormControl.patchValue({ routineSetId: set.routineSetId });
+            },
+          });
       } else {
-        this.markWorkoutSetAsUndoneService.__invoke(setFormControl.value.id).subscribe({
-          next: () => {
-            setFormControl.patchValue({ routineSetId: null });
-          },
-        });
+        this.markWorkoutSetAsUndoneService
+          .__invoke(setFormControl.value.id)
+          .subscribe({
+            next: () => {
+              setFormControl.patchValue({ routineSetId: null });
+            },
+          });
       }
     });
   }
@@ -129,26 +151,32 @@ export class WorkoutsComponent implements OnInit, OnDestroy {
   public initTimer() {
     this.intervalTimer = setInterval(() => {
       const currentDate = new Date();
-      const diff = currentDate.getTime() - new Date(this.workout.startedAt).getTime();
+      const diff =
+        currentDate.getTime() - new Date(this.workout.startedAt).getTime();
 
       const seconds = Math.floor((diff / 1000) % 60);
       const minutes = Math.floor((diff / (1000 * 60)) % 60);
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
 
-      this.timer = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      this.timer = `${String(hours).padStart(2, '0')}:${String(
+        minutes
+      ).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }, 1000);
   }
 
   public finishWorkout(): void {
     this.updateWorkoutSets().then(() => {
-      this.finishWorkoutService.__invoke(this.workout.id, this.workoutForm.value).subscribe({
-        next: () => {
-          this.toastr.success('Workout finished!');
-          this.router.navigate(['/routines']);
-        }, error: () => {
-          this.toastr.error('Something went wrong!');
-        },
-      });
+      this.finishWorkoutService
+        .__invoke(this.workout.id, this.workoutForm.value)
+        .subscribe({
+          next: () => {
+            this.toastr.success('Workout finished!');
+            this.router.navigate(['/routines']);
+          },
+          error: () => {
+            this.toastr.error('Something went wrong!');
+          },
+        });
     });
   }
 

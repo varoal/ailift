@@ -45,18 +45,21 @@ export class UserStatsService {
       .andWhere("sets.isDone = :isDone", { isDone: true })
       .groupBy("workout.id")
       .getRawOne();
-  
+
     return workout;
   }
 
-  async getTotalWeightMovedPerSession(userId: string, numberOfWorkouts: number): Promise<any> {
+  async getTotalWeightMovedPerSession(
+    userId: string,
+    numberOfWorkouts: number
+  ): Promise<any> {
     const subQuery = this.workoutRepository
       .createQueryBuilder("workout")
       .select("workout.id")
       .where("workout.userId = :userId", { userId })
       .orderBy("workout.startedAt", "DESC")
       .take(numberOfWorkouts);
-  
+
     const workouts = await this.workoutRepository
       .createQueryBuilder("workout")
       .leftJoin("workout.exercises", "exercises")
@@ -70,18 +73,21 @@ export class UserStatsService {
       .groupBy("workout.id")
       .setParameters(subQuery.getParameters())
       .getRawMany();
-  
+
     return workouts;
   }
 
-  async getTotalRepsPerSession(userId: string, numberOfWorkouts: number): Promise<any> {
+  async getTotalRepsPerSession(
+    userId: string,
+    numberOfWorkouts: number
+  ): Promise<any> {
     const subQuery = this.workoutRepository
       .createQueryBuilder("workout")
       .select("workout.id")
       .where("workout.userId = :userId", { userId })
       .orderBy("workout.startedAt", "DESC")
       .take(numberOfWorkouts);
-  
+
     const workouts = await this.workoutRepository
       .createQueryBuilder("workout")
       .leftJoin("workout.exercises", "exercises")
@@ -92,10 +98,9 @@ export class UserStatsService {
       .groupBy("workout.id")
       .setParameters(subQuery.getParameters())
       .getRawMany();
-  
+
     return workouts;
   }
-  
 
   async getMaxWeightForExercisePerSession(
     userId: string,

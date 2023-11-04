@@ -4,10 +4,9 @@ import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FinishWorkoutService {
-
   private readonly workoutUrl: string = '';
   constructor(private httpClient: HttpClient) {
     this.workoutUrl = environment.baseUrl + '/api/workouts/finish';

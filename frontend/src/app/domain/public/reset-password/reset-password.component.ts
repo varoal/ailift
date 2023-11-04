@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ResetPasswordService } from './reset-password.service';
 import { ToastrService } from 'ngx-toastr';
@@ -17,10 +17,12 @@ export class ResetPasswordComponent {
   public resetPasswordForm = {} as FormGroup;
   public loading = false;
 
-  constructor(private router: Router,
-              private formBuilder: FormBuilder,
-              private resetPasswordService: ResetPasswordService,
-              private toastrService: ToastrService) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private resetPasswordService: ResetPasswordService,
+    private toastrService: ToastrService
+  ) {
     this.buildForm();
   }
 
@@ -29,22 +31,33 @@ export class ResetPasswordComponent {
   }
 
   private buildForm(): void {
-    this.resetPasswordForm = this.formBuilder.group<resetPasswordFG>({
-      email: null,
+    this.resetPasswordForm = this.formBuilder.group({
+      email: [null, [Validators.required, Validators.email]],
     });
   }
 
   public resetPassword(): void {
-    this.loading = true;
-    this.resetPasswordService.__invoke(this.resetPasswordForm.value).subscribe({
-      next: (response) => {
-        this.loading = false;
-        this.toastrService.success('We have sent you an email for reset your password');
-        this.router.navigate(['/login']);
-      }, error: (errorResponse) => {
-        this.loading = false;
-        this.toastrService.error('An error occurred while trying to reset your password');
-      },
-    });
+    if (this.resetPasswordForm.valid) {
+      this.loading = true;
+      this.resetPasswordService
+        .__invoke(this.resetPasswordForm.value)
+        .subscribe({
+          next: (response) => {
+            this.loading = false;
+            this.toastrService.success(
+              'We have sent you an email to reset your password.'
+            );
+            this.router.navigate(['/login']);
+          },
+          error: (errorResponse) => {
+            this.loading = false;
+            this.toastrService.error(
+              'An error occurred while trying to reset your password.'
+            );
+          },
+        });
+    } else {
+      this.resetPasswordForm.markAllAsTouched();
+    }
   }
 }

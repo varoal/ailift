@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Workout } from './workout';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GetWorkoutService {
   private readonly workoutUrl: string = '';

@@ -49,14 +49,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public lastWeekWorkouts = [] as LastWeekWorkout[];
   public selectedGraphFilter: number = 1;
 
-  constructor(private meService: MeService,
-              private getUserService: GetUserService,
-              private getLastWeekWorkoutsService: GetLastWeekWorkoutsService,
-              public formatTimeService: FormatTimeService,
-              private getTotalWeightOfWorkoutService: GetTotalWeightOfWorkoutService,
-              private getTotalWeightMovedPerSessionService: GetTotalWeightMovedPerSessionService,
-              private getTotalRepsMovedPerSessionService: GetTotalRepsMovedPerSessionService) {
-  }
+  constructor(
+    private meService: MeService,
+    private getUserService: GetUserService,
+    private getLastWeekWorkoutsService: GetLastWeekWorkoutsService,
+    public formatTimeService: FormatTimeService,
+    private getTotalWeightOfWorkoutService: GetTotalWeightOfWorkoutService,
+    private getTotalWeightMovedPerSessionService: GetTotalWeightMovedPerSessionService,
+    private getTotalRepsMovedPerSessionService: GetTotalRepsMovedPerSessionService
+  ) {}
 
   public ngAfterViewInit(): void {
     this.meService.__invoke().subscribe({
@@ -69,8 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
   private getUser(): void {
     this.getUserService.__invoke(this.me.id).subscribe({
@@ -99,7 +99,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public getHowManyDaysAgo(workout: LastWeekWorkout) {
     const today = new Date();
     const workoutDate = new Date(workout.startedAt);
-    const differenceInDays = Math.abs(today.getTime() - workoutDate.getTime()) / (1000 * 3600 * 24);
+    const differenceInDays =
+      Math.abs(today.getTime() - workoutDate.getTime()) / (1000 * 3600 * 24);
     if (differenceInDays < 1) {
       return 'Today';
     } else if (differenceInDays < 2) {
@@ -109,9 +110,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async getWorkoutVolume(workout: LastWeekWorkout) {
-    await this.getTotalWeightOfWorkoutService.__invoke(workout.id).then((volume) => {
-      workout.volume = volume?.totalvolume as number;
-    });
+    await this.getTotalWeightOfWorkoutService
+      .__invoke(workout.id)
+      .then((volume) => {
+        workout.volume = volume?.totalvolume as number;
+      });
   }
 
   public toggleExercisesVisibility(workout: LastWeekWorkout): void {
@@ -119,7 +122,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async getTotalWeightMovedPerSession() {
-    const data = await this.getTotalWeightMovedPerSessionService.__invoke(this.me.id, 7);
+    const data = await this.getTotalWeightMovedPerSessionService.__invoke(
+      this.me.id,
+      7
+    );
     if (data) {
       let datasets: number[] = [];
       data.forEach((item, index) => {
@@ -128,9 +134,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       this.barChartData = {
         labels: ['1', '2', '3', '4', '5', '6', '7'],
-        datasets: [
-          { label: 'Total weight moved', data: datasets },
-        ],
+        datasets: [{ label: 'Total weight moved', data: datasets }],
       } as never;
 
       this.barChartOptions!.scales!['y'] = {
@@ -144,7 +148,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   async getTotalRepsMovedPerSession() {
-    const data = await this.getTotalRepsMovedPerSessionService.__invoke(this.me.id, 7);
+    const data = await this.getTotalRepsMovedPerSessionService.__invoke(
+      this.me.id,
+      7
+    );
     if (data) {
       let datasets: number[] = [];
       data.forEach((item, index) => {
@@ -153,9 +160,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
       this.barChartData = {
         labels: ['1', '2', '3', '4', '5', '6', '7'],
-        datasets: [
-          { label: 'Total reps moved', data: datasets },
-        ],
+        datasets: [{ label: 'Total reps moved', data: datasets }],
       } as never;
 
       this.barChartOptions!.scales!['y'] = {
@@ -175,7 +180,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.getTotalWeightMovedPerSession();
         break;
       case 2:
-
         this.getTotalRepsMovedPerSession();
         break;
     }
@@ -185,7 +189,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (this.lastWeekWorkouts.length > 0) {
       const today = new Date();
       const workoutDate = new Date(this.lastWeekWorkouts[0].startedAt);
-      const differenceInDays = Math.abs(today.getTime() - workoutDate.getTime()) / (1000 * 3600 * 24);
+      const differenceInDays =
+        Math.abs(today.getTime() - workoutDate.getTime()) / (1000 * 3600 * 24);
       if (differenceInDays < 1) {
         return 'today';
       } else if (differenceInDays < 2) {

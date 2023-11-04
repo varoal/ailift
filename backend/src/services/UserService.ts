@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-
 import { DataSource, Repository } from "typeorm";
 import { User } from "../entity/User";
 

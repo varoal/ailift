@@ -22,7 +22,12 @@ export class Exercise {
   @ManyToOne(() => MuscleGroup, (muscleGroup) => muscleGroup.primaryExercises)
   primaryMuscleGroup!: MuscleGroup;
 
-  @ManyToMany(() => MuscleGroup, (muscleGroup) => muscleGroup.secondaryExercises, { cascade: true })
+  @ManyToMany(
+    () => MuscleGroup,
+    (muscleGroup) => muscleGroup.secondaryExercises,
+    { cascade: true }
+  )
+  
   @JoinTable({
     name: "exercise_secondary_muscle_group",
     joinColumn: { name: "exercise_id", referencedColumnName: "id" },

@@ -37,6 +37,7 @@ export class WorkoutExercise {
   progressionType!: ProgressionType;
 
   @ManyToOne(() => RoutineExercise, { onDelete: "CASCADE" })
+  
   @JoinColumn()
   routineExercise!: RoutineExercise;
 

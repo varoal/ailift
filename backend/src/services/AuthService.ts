@@ -1,10 +1,10 @@
-import { DataSource, Repository } from "typeorm";
-import { User } from "../entity/User";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { HttpException } from "../utils/HttpException";
 import dotenv from "dotenv";
+import { DataSource, Repository } from "typeorm";
+import { User } from "../entity/User";
+import { HttpException } from "../utils/HttpException";
 import { Token, TokenType } from "../entity/Token";
 import { sendEmail } from "./EmailService";
 
@@ -39,7 +39,7 @@ export class AuthService {
       username,
       email,
       password: hashedPassword,
-      description
+      description,
     });
     const savedUser = await userRepository.save(user);
 

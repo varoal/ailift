@@ -1,7 +1,5 @@
-// routineExercise.controller.ts
 import { Request, Response } from "express";
 import { RoutineExerciseService } from "../services/RoutineExerciseService";
-import { classToPlain } from "class-transformer";
 
 export class RoutineExerciseController {
   constructor(private routineExerciseService: RoutineExerciseService) {}
@@ -46,9 +44,7 @@ export class RoutineExerciseController {
 
   async createRoutineExercise(req: Request, res: Response) {
     try {
-      const { routineId, exerciseId, progressionType, startWeight, frequencyOfIncrement, increments, frequencyOfDeload, deload, setsGoal, repsGoal } = req.body;
-
-      const routineExercise = await this.routineExerciseService.createRoutineExercise(
+      const {
         routineId,
         exerciseId,
         progressionType,
@@ -58,22 +54,37 @@ export class RoutineExerciseController {
         frequencyOfDeload,
         deload,
         setsGoal,
-        repsGoal
-      );
+        repsGoal,
+      } = req.body;
+
+      const routineExercise =
+        await this.routineExerciseService.createRoutineExercise(
+          routineId,
+          exerciseId,
+          progressionType,
+          startWeight,
+          frequencyOfIncrement,
+          increments,
+          frequencyOfDeload,
+          deload,
+          setsGoal,
+          repsGoal
+        );
       res.status(201).json(routineExercise);
     } catch (error) {
       console.log(error);
-      res.status(500).json({error: 'An error occurred while creating the RoutineExercise.'});
+      res
+        .status(500)
+        .json({
+          error: "An error occurred while creating the RoutineExercise.",
+        });
     }
-}
+  }
 
-async updateRoutineExercise(req: Request, res: Response): Promise<void> {
+  async updateRoutineExercise(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const { routineId, exerciseId, progressionType, startWeight, frequencyOfIncrement, increments, frequencyOfDeload, deload, setsGoal, repsGoal } = req.body;
-
-      const routineExercise = await this.routineExerciseService.updateRoutineExercise(
-        id,
+      const {
         routineId,
         exerciseId,
         progressionType,
@@ -83,14 +94,32 @@ async updateRoutineExercise(req: Request, res: Response): Promise<void> {
         frequencyOfDeload,
         deload,
         setsGoal,
-        repsGoal
-      );
+        repsGoal,
+      } = req.body;
+
+      const routineExercise =
+        await this.routineExerciseService.updateRoutineExercise(
+          id,
+          routineId,
+          exerciseId,
+          progressionType,
+          startWeight,
+          frequencyOfIncrement,
+          increments,
+          frequencyOfDeload,
+          deload,
+          setsGoal,
+          repsGoal
+        );
       res.json(routineExercise);
     } catch (error) {
-      res.status(500).json({error: 'An error occurred while updating the RoutineExercise.'});
+      res
+        .status(500)
+        .json({
+          error: "An error occurred while updating the RoutineExercise.",
+        });
     }
-}
-
+  }
 
   async deleteRoutineExercise(req: Request, res: Response) {
     try {
@@ -105,10 +134,13 @@ async updateRoutineExercise(req: Request, res: Response): Promise<void> {
   async incrementWeight(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
-      const updatedRoutineExercise = await this.routineExerciseService.incrementWeight(id);
+      const updatedRoutineExercise =
+        await this.routineExerciseService.incrementWeight(id);
       res.json(updatedRoutineExercise);
     } catch (error) {
-      res.status(500).json({ error: 'An error occurred while incrementing the weight.' });
+      res
+        .status(500)
+        .json({ error: "An error occurred while incrementing the weight." });
     }
   }
 
@@ -116,10 +148,19 @@ async updateRoutineExercise(req: Request, res: Response): Promise<void> {
     try {
       const { routineExerciseId } = req.params;
       const { reps, weight } = req.body;
-      const updatedRoutineExercise = await this.routineExerciseService.addSetToRoutineExercise(routineExerciseId, reps, weight);
+      const updatedRoutineExercise =
+        await this.routineExerciseService.addSetToRoutineExercise(
+          routineExerciseId,
+          reps,
+          weight
+        );
       res.json(updatedRoutineExercise);
     } catch (error) {
-      res.status(500).json({ error: 'An error occurred while adding a set to the RoutineExercise.' });
+      res
+        .status(500)
+        .json({
+          error: "An error occurred while adding a set to the RoutineExercise.",
+        });
     }
   }
 }

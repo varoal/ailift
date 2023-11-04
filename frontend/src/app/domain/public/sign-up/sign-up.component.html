@@ -39,7 +39,28 @@
               placeholder="Jhon Doe"
               required=""
             />
+            <div
+              *ngIf="
+                signUpForm.get('username')?.invalid &&
+                (signUpForm.get('username')?.dirty ||
+                  signUpForm.get('username')?.touched)
+              "
+            >
+              <p
+                *ngIf="signUpForm.get('username')?.errors?.['required']"
+                class="text-red-500"
+              >
+                Username is required.
+              </p>
+              <p
+                *ngIf="signUpForm.get('username')?.errors?.['minlength']"
+                class="text-red-500"
+              >
+                Username must be at least 3 characters long.
+              </p>
+            </div>
           </div>
+
           <div>
             <label
               for="email"
@@ -55,12 +76,31 @@
               placeholder="name@company.com"
               required=""
             />
+            <div
+              *ngIf="
+                signUpForm.get('email')?.touched &&
+                signUpForm.get('email')?.errors
+              "
+            >
+              <p
+                *ngIf="signUpForm.get('email')?.errors?.['required']"
+                class="text-red-500"
+              >
+                Email is required.
+              </p>
+              <p
+                *ngIf="signUpForm.get('email')?.errors?.['email']"
+                class="text-red-500"
+              >
+                Please enter a valid email address.
+              </p>
+            </div>
           </div>
           <div>
             <label
               for="description"
               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >Description</label
+              >Description (Optional)</label
             >
             <input
               type="text"
@@ -87,6 +127,32 @@
               class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-sky-600 focus:border-sky-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               required=""
             />
+            <div
+              *ngIf="
+                signUpForm.get('password')?.touched &&
+                signUpForm.get('password')?.errors
+              "
+            >
+              <p
+                *ngIf="signUpForm.get('password')?.errors?.['required']"
+                class="text-red-500"
+              >
+                Password is required.
+              </p>
+              <p
+                *ngIf="signUpForm.get('password')?.errors?.['minlength']"
+                class="text-red-500"
+              >
+                Password must be at least 8 characters long.
+              </p>
+              <p
+                *ngIf="signUpForm.get('password')?.errors?.['passwordStrength']"
+                class="text-red-500"
+              >
+                Password must include at least one uppercase letter, one
+                lowercase letter, one number, and one special character.
+              </p>
+            </div>
             <p class="mt-2 text-sm font-light text-gray-700 dark:text-white">
               Include a capital letter, number, and special character
             </p>

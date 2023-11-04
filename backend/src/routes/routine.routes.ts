@@ -10,12 +10,41 @@ export const routineRouter = (dataSource: DataSource) => {
   const routineService = new RoutineService(dataSource);
   const routineController = new RoutineController(routineService);
 
-  routineRouter.get("/", routineController.getAllRoutines.bind(routineController));
-  routineRouter.get("/user", authMiddleware, routineController.getRoutinesByUser.bind(routineController));
-  routineRouter.get("/:id", routineController.getRoutineById.bind(routineController));
-  routineRouter.post("/", authMiddleware, routineValidationRules(), routineController.createRoutine.bind(routineController));
-  routineRouter.put("/:id", authMiddleware,routineValidationRules(), routineController.updateRoutine.bind(routineController));
-  routineRouter.delete("/:id", authMiddleware, routineController.deleteRoutine.bind(routineController));
+  routineRouter.get(
+    "/",
+    routineController.getAllRoutines.bind(routineController)
+  );
+
+  routineRouter.get(
+    "/user",
+    authMiddleware,
+    routineController.getRoutinesByUser.bind(routineController)
+  );
+
+  routineRouter.get(
+    "/:id",
+    routineController.getRoutineById.bind(routineController)
+  );
+
+  routineRouter.post(
+    "/",
+    authMiddleware,
+    routineValidationRules(),
+    routineController.createRoutine.bind(routineController)
+  );
+
+  routineRouter.put(
+    "/:id",
+    authMiddleware,
+    routineValidationRules(),
+    routineController.updateRoutine.bind(routineController)
+  );
+  
+  routineRouter.delete(
+    "/:id",
+    authMiddleware,
+    routineController.deleteRoutine.bind(routineController)
+  );
 
   return routineRouter;
 };

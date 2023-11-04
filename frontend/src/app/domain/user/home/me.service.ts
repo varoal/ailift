@@ -8,7 +8,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class MeService {
-
   private authUrl: string;
 
   constructor(private http: HttpClient) {
@@ -16,6 +15,6 @@ export class MeService {
   }
 
   public __invoke(): Observable<Me> {
-    return this.http.get<Me>(this.authUrl)
+    return this.http.get<Me>(this.authUrl);
   }
 }

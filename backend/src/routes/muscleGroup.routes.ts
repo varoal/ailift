@@ -9,8 +9,14 @@ export const muscleGroupRouter = (dataSource: DataSource) => {
   const muscleGroupService = new MuscleGroupService(dataSource);
   const muscleGroupController = new MuscleGroupController(muscleGroupService);
 
-  muscleGroupRouter.get("/", muscleGroupController.getMuscleGroups.bind(muscleGroupController));
-  muscleGroupRouter.post("/", authMiddleware, (req, res) => muscleGroupController.createMuscleGroup(req, res));
+  muscleGroupRouter.get(
+    "/",
+    muscleGroupController.getMuscleGroups.bind(muscleGroupController)
+  );
+  
+  muscleGroupRouter.post("/", authMiddleware, (req, res) =>
+    muscleGroupController.createMuscleGroup(req, res)
+  );
 
   return muscleGroupRouter;
 };

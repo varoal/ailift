@@ -3,9 +3,7 @@ import { WorkoutSet } from "../entity/WorkoutSet";
 import { WorkoutExercise } from "../entity/WorkoutExercise";
 
 export class WorkoutSetService {
-  constructor(
-    private dataSource: DataSource,
-  ) {}
+  constructor(private dataSource: DataSource) {}
 
   private get workoutSetRepository(): Repository<WorkoutSet> {
     return this.dataSource.getRepository(WorkoutSet);

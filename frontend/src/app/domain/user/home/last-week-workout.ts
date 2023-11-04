@@ -1,5 +1,3 @@
-import { Exercise } from '../workouts/workout';
-
 export interface LastWeekWorkout {
   description: string;
   duration: number;

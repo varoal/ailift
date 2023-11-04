@@ -1,6 +1,7 @@
+import "reflect-metadata";
+import dotenv from "dotenv";
 import express from "express";
 import { Request, Response, NextFunction } from "express";
-import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "./entity/User";
 import { MuscleGroup } from "./entity/MuscleGroup";
@@ -18,15 +19,11 @@ import { Workout } from "./entity/Workout";
 import { WorkoutExercise } from "./entity/WorkoutExercise";
 import { Set } from "./entity/Set";
 import { routineExerciseRouter } from "./routes/routineExercise.routes";
-import "reflect-metadata";
-import dotenv from "dotenv";
 import { Token } from "./entity/Token";
 import { ValidationException } from "./utils/HttpException";
 import { WorkoutSet } from "./entity/WorkoutSet";
 import { setRouter } from "./routes/set.routes";
 import { workoutRouter } from "./routes/workout.routes";
-import RoutineExerciseService from "./services/RoutineExerciseService";
-import SetService from "./services/SetService";
 import { userStatsRouter } from "./routes/userStats.routes";
 import { seedDatabase } from "./seeding/seedDatabase";
 
@@ -35,7 +32,7 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json()); // Enable JSON body parsing
+app.use(express.json());
 
 app.use(cors());
 
@@ -51,7 +48,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// Create the database connection
 export const dataSource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
@@ -83,11 +79,6 @@ dataSource
     if (process.env.NODE_ENV !== "production") {
       await seedDatabase();
     }
-    const setService = new SetService(dataSource);
-    const routineExerciseService = new RoutineExerciseService(
-      dataSource,
-      setService
-    );
 
     app.use("/api/auth", authRouter(dataSource));
     app.use("/api/user", authMiddleware, userRouter(dataSource));

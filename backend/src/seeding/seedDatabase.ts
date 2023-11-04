@@ -13,7 +13,6 @@ export async function seedDatabase() {
   let arms: MuscleGroup;
   let abs: MuscleGroup;
 
-  // Seed Muscle Groups
   const muscleGroupCount = await muscleGroupRepository.count();
   if (muscleGroupCount === 0) {
     console.log("Seeding muscle groups...");
@@ -28,7 +27,6 @@ export async function seedDatabase() {
         { name: "Abs" },
       ]);
   } else {
-    // If they already exist, find them to get their instances
     chest = await muscleGroupRepository.findOneBy({ name: "Chest" });
     back = await muscleGroupRepository.findOneBy({ name: "Back" });
     shoulders = await muscleGroupRepository.findOneBy({ name: "Shoulders" });
@@ -37,7 +35,6 @@ export async function seedDatabase() {
     abs = await muscleGroupRepository.findOneBy({ name: "Abs" });
   }
 
-  // Seed Exercises
   const exerciseCount = await exerciseRepository.count();
   if (exerciseCount === 0) {
     console.log("Seeding exercises...");
@@ -158,7 +155,7 @@ export async function seedDatabase() {
         primaryMuscleGroup: back,
       },
       {
-        name: "Pec Deck Fly",
+        name: "Chest Fly",
         description: "Chest Isolation Exercise",
         primaryMuscleGroup: chest,
       },

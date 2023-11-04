@@ -4,21 +4,17 @@ import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
 import { NgChartsModule } from 'ng2-charts';
 
-
-
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
+  declarations: [HomeComponent],
   imports: [
     CommonModule,
     NgChartsModule,
     RouterModule.forChild([
       {
         path: '',
-        component: HomeComponent
-      }
-    ])
+        component: HomeComponent,
+      },
+    ]),
   ],
 })
-export class HomeModule { }
+export class HomeModule {}

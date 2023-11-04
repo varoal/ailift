@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Routine } from '../../../../application/user/interfaces/routine';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditRoutineService {
   private routineUrl: string = '';
@@ -15,6 +15,9 @@ export class EditRoutineService {
   }
 
   public __invoke(data: any, routineId: string): Observable<Routine> {
-    return this.httpClient.put<Routine>(this.routineUrl + '/' + routineId, data);
+    return this.httpClient.put<Routine>(
+      this.routineUrl + '/' + routineId,
+      data
+    );
   }
 }

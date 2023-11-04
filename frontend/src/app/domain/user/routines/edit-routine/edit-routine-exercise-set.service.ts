@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EditRoutineExerciseSetService {
-
   private setsUrl: string = '';
 
   constructor(private httpClient: HttpClient) {

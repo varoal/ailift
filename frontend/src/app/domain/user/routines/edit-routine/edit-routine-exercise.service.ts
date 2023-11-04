@@ -4,10 +4,9 @@ import { environment } from '../../../../../environments/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EditRoutineExerciseService {
-
   private routineUrl: string = '';
 
   constructor(private httpClient: HttpClient) {
@@ -15,6 +14,9 @@ export class EditRoutineExerciseService {
   }
 
   public __invoke(routineExerciseId: string, data: any): Observable<any> {
-    return this.httpClient.put<any>(this.routineUrl + '/' + routineExerciseId, data);
+    return this.httpClient.put<any>(
+      this.routineUrl + '/' + routineExerciseId,
+      data
+    );
   }
 }

@@ -13,6 +13,7 @@ export class LoggedLayoutComponent {
 
   public logout(): void {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 }

@@ -4,12 +4,8 @@ import { NewPasswordComponent } from './new-password.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
-  declarations: [
-    NewPasswordComponent
-  ],
+  declarations: [NewPasswordComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -21,4 +17,4 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
 })
-export class NewPasswordModule { }
+export class NewPasswordModule {}

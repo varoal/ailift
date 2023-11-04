@@ -1,13 +1,9 @@
 import { DataSource, Repository } from "typeorm";
 import { WorkoutExercise } from "../entity/WorkoutExercise";
 import { RoutineExercise } from "../entity/RoutineExercise";
-import RoutineExerciseService from "./RoutineExerciseService";
 
 export class WorkoutExerciseService {
-  constructor(
-    private dataSource: DataSource,
-    private routineExerciseService: RoutineExerciseService
-  ) {}
+  constructor(private dataSource: DataSource) {}
 
   private get workoutExerciseRepository(): Repository<WorkoutExercise> {
     return this.dataSource.getRepository(WorkoutExercise);
@@ -53,7 +49,6 @@ export class WorkoutExerciseService {
     workoutExercise.deload = routineExercise.deload;
     workoutExercise.frequencyOfDeload = routineExercise.frequencyOfDeload;
 
-    // Add successful and failed sessions count from routineExercise
     workoutExercise.successfulSessionsCount =
       routineExercise.successfulSessionsCount;
     workoutExercise.failedSessionsCount = routineExercise.failedSessionsCount;

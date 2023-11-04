@@ -4,12 +4,8 @@ import { SignUpComponent } from './sign-up.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
-
 @NgModule({
-  declarations: [
-    SignUpComponent
-  ],
+  declarations: [SignUpComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -21,4 +17,4 @@ import { ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
 })
-export class SignUpModule { }
+export class SignUpModule {}

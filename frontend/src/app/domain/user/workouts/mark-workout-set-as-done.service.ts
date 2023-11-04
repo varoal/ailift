@@ -15,6 +15,9 @@ export class MarkWorkoutSetAsDoneService {
   }
 
   public __invoke(workoutSetId: string): Observable<MarkAsDone> {
-    return this.httpClient.post<MarkAsDone>(this.workoutUrl + '/' + workoutSetId, {});
+    return this.httpClient.post<MarkAsDone>(
+      this.workoutUrl + '/' + workoutSetId,
+      {}
+    );
   }
 }

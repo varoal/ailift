@@ -1,5 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CreateRoutineExerciseService } from '../create-routine/create-routine-exercise.service';
@@ -13,9 +19,7 @@ import { EditRoutineExerciseSetService } from './edit-routine-exercise-set.servi
 import { DeleteRoutineExerciseService } from './delete-routine-exercise.service';
 import { DeleteRoutineExerciseSetService } from './delete-routine-exercise-set.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import {
-  LinearExerciseModalComponent,
-} from '../../../../application/user/modules/linear-exercise-modal/linear-exercise-modal.component';
+import { LinearExerciseModalComponent } from '../../../../application/user/modules/linear-exercise-modal/linear-exercise-modal.component';
 
 interface RoutineFG {
   name: string;
@@ -60,21 +64,24 @@ export class EditRoutineComponent implements OnInit {
   private routine = {} as Routine;
   private exercisesForBeingDeleted: string[] = [];
   private exerciseSetsForBeingDeleted: string[] = [];
-  @ViewChild('linearExerciseModal') public linearExerciseModal = {} as LinearExerciseModalComponent;
+  @ViewChild('linearExerciseModal') public linearExerciseModal =
+    {} as LinearExerciseModalComponent;
 
-  constructor(private formBuilder: FormBuilder,
-              private router: Router,
-              private toastr: ToastrService,
-              private createRoutineExerciseService: CreateRoutineExerciseService,
-              private createExerciseSetsService: CreateExerciseSetsService,
-              private activatedRoute: ActivatedRoute,
-              private getRoutineService: GetRoutineService,
-              private getRoutineExerciseService: GetRoutineExerciseService,
-              private editRoutineService: EditRoutineService,
-              private editRoutineExerciseSetService: EditRoutineExerciseSetService,
-              private deleteRoutineExerciseService: DeleteRoutineExerciseService,
-              private deleteRoutineExerciseSetService: DeleteRoutineExerciseSetService,
-              private ngxUiLoaderService: NgxUiLoaderService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private toastr: ToastrService,
+    private createRoutineExerciseService: CreateRoutineExerciseService,
+    private createExerciseSetsService: CreateExerciseSetsService,
+    private activatedRoute: ActivatedRoute,
+    private getRoutineService: GetRoutineService,
+    private getRoutineExerciseService: GetRoutineExerciseService,
+    private editRoutineService: EditRoutineService,
+    private editRoutineExerciseSetService: EditRoutineExerciseSetService,
+    private deleteRoutineExerciseService: DeleteRoutineExerciseService,
+    private deleteRoutineExerciseSetService: DeleteRoutineExerciseSetService,
+    private ngxUiLoaderService: NgxUiLoaderService
+  ) {
     this.routineId = this.activatedRoute.snapshot.paramMap.get('id') as string;
     this.buildForm();
   }
@@ -115,13 +122,15 @@ export class EditRoutineComponent implements OnInit {
 
       exercises.push(exerciseFormControl);
 
-      exerciseFormControl.get('progressionType')?.valueChanges.subscribe((value) => {
-        if (value === 'linear') {
-          this.openLinearProgressionModal(exerciseFormControl);
-        } else {
-          exerciseFormControl.patchValue({ isEditable: false });
-        }
-      });
+      exerciseFormControl
+        .get('progressionType')
+        ?.valueChanges.subscribe((value) => {
+          if (value === 'linear') {
+            this.openLinearProgressionModal(exerciseFormControl);
+          } else {
+            exerciseFormControl.patchValue({ isEditable: false });
+          }
+        });
 
       if (exerciseFormControl.get('progressionType')?.value === 'free') {
         this.addSetToExercise(exerciseFormControl);
@@ -130,27 +139,34 @@ export class EditRoutineComponent implements OnInit {
   }
 
   public openLinearProgressionModal(exerciseFormControl: any) {
-    this.linearExerciseModal.setLinearProgressionData(exerciseFormControl.value);
+    this.linearExerciseModal.setLinearProgressionData(
+      exerciseFormControl.value
+    );
     this.linearExerciseModal.openModal();
     exerciseFormControl.patchValue({ isEditable: true });
     this.linearExerciseModal.actionConfirmedSubject.subscribe((data) => {
-      exerciseFormControl.patchValue({
-        progressionType: 'linear',
-        repsGoal: data.repsGoal,
-        setsGoal: data.setsGoal,
-        startWeight: data.startWeight,
-        frequencyOfIncrement: data.frequencyOfIncrement,
-        increments: data.increments,
-        deload: data.deload,
-        frequencyOfDeload: data.frequencyOfDeload,
-      }, { emitEvent: false });
+      exerciseFormControl.patchValue(
+        {
+          progressionType: 'linear',
+          repsGoal: data.repsGoal,
+          setsGoal: data.setsGoal,
+          startWeight: data.startWeight,
+          frequencyOfIncrement: data.frequencyOfIncrement,
+          increments: data.increments,
+          deload: data.deload,
+          frequencyOfDeload: data.frequencyOfDeload,
+        },
+        { emitEvent: false }
+      );
       this.addLinearProgressionSets(exerciseFormControl);
     });
   }
 
   public checkIfExerciseIsInRoutine($event: Exercise): boolean {
     const exercises = this.getExercisesFormArray();
-    return exercises.value.some((exercise: ExerciseFG) => exercise.exerciseId === $event.id);
+    return exercises.value.some(
+      (exercise: ExerciseFG) => exercise.exerciseId === $event.id
+    );
   }
 
   public getExercisesFormArray(): FormArray<any> {
@@ -178,11 +194,16 @@ export class EditRoutineComponent implements OnInit {
     exercises.removeAt(index);
   }
 
-  public getSetsOfExerciseFormArray(exercice: AbstractControl<any>): FormArray<any> {
+  public getSetsOfExerciseFormArray(
+    exercice: AbstractControl<any>
+  ): FormArray<any> {
     return exercice.get('sets') as FormArray;
   }
 
-  public removeSet(exercise: AbstractControl<any>, set: AbstractControl<any>): void {
+  public removeSet(
+    exercise: AbstractControl<any>,
+    set: AbstractControl<any>
+  ): void {
     const sets = this.getSetsOfExerciseFormArray(exercise);
     const index = sets.controls.indexOf(set);
     const setId = set.get('id')?.value;
@@ -196,21 +217,24 @@ export class EditRoutineComponent implements OnInit {
     this.ngxUiLoaderService.startLoader('update-routine');
 
     this.deleteItemsFromRoutine();
-    this.editRoutineService.__invoke(this.routineForm.value, this.routineId).subscribe({
-      next: (routine) => {
-        setTimeout(() => {
-          this.ngxUiLoaderService.stopLoader('update-routine');
-          this.toastr.success('Routine edited successfully');
-          this.router.navigate(['/routines']);
-        }, 3000);
-        const exercises = this.getExercisesFormArray();
-        exercises.controls.forEach((exercise: AbstractControl<any>) => {
-          this.createOrEditExercise(exercise);
-        });
-      }, error: () => {
-        this.toastr.error('Error updating routine');
-      },
-    });
+    this.editRoutineService
+      .__invoke(this.routineForm.value, this.routineId)
+      .subscribe({
+        next: (routine) => {
+          setTimeout(() => {
+            this.ngxUiLoaderService.stopLoader('update-routine');
+            this.toastr.success('Routine edited successfully');
+            this.router.navigate(['/routines']);
+          }, 3000);
+          const exercises = this.getExercisesFormArray();
+          exercises.controls.forEach((exercise: AbstractControl<any>) => {
+            this.createOrEditExercise(exercise);
+          });
+        },
+        error: () => {
+          this.toastr.error('Error updating routine');
+        },
+      });
   }
 
   private getRoutine(): void {
@@ -251,15 +275,17 @@ export class EditRoutineComponent implements OnInit {
           });
           exercises.push(exerciseFormControl);
 
-          exerciseFormControl.get('progressionType')?.valueChanges.subscribe((value) => {
-            if (value === 'linear') {
-              this.openLinearProgressionModal(exerciseFormControl);
-              exercises.get('sets')?.disable();
-            } else {
-              exerciseFormControl.patchValue({ isEditable: false });
-              exerciseFormControl.get('sets')?.enable();
-            }
-          });
+          exerciseFormControl
+            .get('progressionType')
+            ?.valueChanges.subscribe((value) => {
+              if (value === 'linear') {
+                this.openLinearProgressionModal(exerciseFormControl);
+                exercises.get('sets')?.disable();
+              } else {
+                exerciseFormControl.patchValue({ isEditable: false });
+                exerciseFormControl.get('sets')?.enable();
+              }
+            });
 
           routineExercise.sets.forEach((set: any) => {
             const setFormControl = this.formBuilder.group<any>({
@@ -267,11 +293,15 @@ export class EditRoutineComponent implements OnInit {
               routineExerciseId: routineExercise.id,
               reps: new FormControl({
                 value: set.reps,
-                disabled: exerciseFormControl.get('progressionType')?.value === 'linear',
+                disabled:
+                  exerciseFormControl.get('progressionType')?.value ===
+                  'linear',
               }),
               weight: new FormControl({
                 value: set.weight,
-                disabled: exerciseFormControl.get('progressionType')?.value === 'linear',
+                disabled:
+                  exerciseFormControl.get('progressionType')?.value ===
+                  'linear',
               }),
             });
             const sets = exerciseFormControl.get('sets') as FormArray;
@@ -294,11 +324,13 @@ export class EditRoutineComponent implements OnInit {
 
   private createExercise(exercise: any) {
     exercise.routineId = this.routineId;
-    this.createRoutineExerciseService.__invoke(exercise.value).then((exerciseResponse) => {
-      exercise.getRawValue().sets.forEach((set: SetFG) => {
-        this.createOrEditSets(set, exerciseResponse!.id);
+    this.createRoutineExerciseService
+      .__invoke(exercise.value)
+      .then((exerciseResponse) => {
+        exercise.getRawValue().sets.forEach((set: SetFG) => {
+          this.createOrEditSets(set, exerciseResponse!.id);
+        });
       });
-    });
   }
 
   async createOrEditSets(set: any, exerciseId: string) {
@@ -307,8 +339,7 @@ export class EditRoutineComponent implements OnInit {
       await this.createExerciseSetsService.__invoke(set);
     } else {
       this.editRoutineExerciseSetService.__invoke(set, set.id).subscribe({
-        next: () => {
-        },
+        next: () => {},
       });
     }
   }
@@ -325,15 +356,13 @@ export class EditRoutineComponent implements OnInit {
 
   private deleteExercise(exerciseId: string) {
     this.deleteRoutineExerciseService.__invoke(exerciseId).subscribe({
-      next: () => {
-      },
+      next: () => {},
     });
   }
 
   private deleteSet(setId: string) {
     this.deleteRoutineExerciseSetService.__invoke(setId).subscribe({
-      next: () => {
-      },
+      next: () => {},
     });
   }
 

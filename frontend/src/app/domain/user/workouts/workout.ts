@@ -38,6 +38,3 @@ export interface WorkoutSet {
   weight: number;
   date: number;
 }
-
-
-

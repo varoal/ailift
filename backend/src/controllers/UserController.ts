@@ -1,4 +1,3 @@
-// UserController.ts
 import { Request, Response, NextFunction } from "express";
 import { UserService } from "../services/UserService";
 

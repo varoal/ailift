@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginService } from './login.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  ActivatedRoute,
-  ActivatedRouteSnapshot,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 export interface LoginFG {
@@ -19,6 +15,7 @@ export interface LoginFG {
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  public loading!: boolean;
   public loginForm: FormGroup = {} as FormGroup;
 
   constructor(
@@ -39,23 +36,38 @@ export class LoginComponent {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      remember: [false],
     });
   }
 
   public login(): void {
-    this.loginService.__invoke(this.loginForm.value).subscribe({
-      next: (loginResponse) => {
-        localStorage.setItem('token', loginResponse.token);
-        this.router.navigate(['/home']);
-      },
-      error: (errorResponse) => {
-        this.toastrService.error(errorResponse.error.message);
-      },
-    });
+    if (this.loginForm.valid) {
+      this.loading = true;
+      this.loginService.__invoke(this.loginForm.value).subscribe({
+        next: (loginResponse) => {
+          this.loading = false;
+          const storage = this.loginForm.value.remember
+            ? localStorage
+            : sessionStorage;
+          storage.setItem('token', loginResponse.token);
+          localStorage.setItem('token', loginResponse.token);
+          this.router.navigate(['/home']);
+        },
+        error: (errorResponse) => {
+          this.toastrService.error(errorResponse.error.message);
+        },
+      });
+    } else {
+      Object.keys(this.loginForm.controls).forEach((field) => {
+        const control = this.loginForm.get(field);
+        control?.markAsTouched({ onlySelf: true });
+      });
+    }
   }
 
   public checkIsLoggedIn(): void {
-    if (localStorage.getItem('token')) {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
       this.router.navigate(['/home']);
     } else {
       this.router.navigate(['/login']);

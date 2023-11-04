@@ -3,9 +3,7 @@ import { GetUserRoutinesService } from './get-user-routines.service';
 import { Router } from '@angular/router';
 import { RemoveRoutineService } from './remove-routine.service';
 import { ToastrService } from 'ngx-toastr';
-import {
-  ActionConfirmationModalComponent,
-} from '../../../application/user/modules/action-confirmation-modal/action-confirmation-modal.component';
+import { ActionConfirmationModalComponent } from '../../../application/user/modules/action-confirmation-modal/action-confirmation-modal.component';
 import { Routine } from '../../../application/user/interfaces/routine';
 import { StartWorkoutService } from './start-workout.service';
 import { ActiveWorkoutService } from '../../../application/user/services/workouts/active-workout.service';
@@ -17,19 +15,20 @@ import { ActiveWorkout } from '../../../application/user/services/workouts/activ
   styleUrls: ['./routines.component.css'],
 })
 export class RoutinesComponent implements OnInit {
-
   public routines = [] as Routine[];
-  @ViewChild('actionConfirmationModal') public actionConfirmationModal: ActionConfirmationModalComponent = {} as ActionConfirmationModalComponent;
+  @ViewChild('actionConfirmationModal')
+  public actionConfirmationModal: ActionConfirmationModalComponent =
+    {} as ActionConfirmationModalComponent;
   public activeWorkout: ActiveWorkout = {} as ActiveWorkout;
 
-  constructor(private getUserRoutinesService: GetUserRoutinesService,
-              private router: Router,
-              private toastr: ToastrService,
-              private removeRoutineService: RemoveRoutineService,
-              private startWorkoutService: StartWorkoutService,
-              private activeWorkoutService: ActiveWorkoutService) {
-
-  }
+  constructor(
+    private getUserRoutinesService: GetUserRoutinesService,
+    private router: Router,
+    private toastr: ToastrService,
+    private removeRoutineService: RemoveRoutineService,
+    private startWorkoutService: StartWorkoutService,
+    private activeWorkoutService: ActiveWorkoutService
+  ) {}
 
   public ngOnInit(): void {
     this.getActiveWorkout();
@@ -60,7 +59,8 @@ export class RoutinesComponent implements OnInit {
   async removeRoutine(id: string) {
     this.actionConfirmationModal.actionConfirmationData = {
       title: 'Remove routine',
-      message: 'Are you sure you want to remove this routine?. This action cannot be undone.',
+      message:
+        'Are you sure you want to remove this routine?. This action cannot be undone.',
     };
 
     this.actionConfirmationModal.openModal();
@@ -81,7 +81,8 @@ export class RoutinesComponent implements OnInit {
         this.toastr.success('Routine removed successfully');
         this.getUserRoutines();
         this.getActiveWorkout();
-      }, error: () => {
+      },
+      error: () => {
         this.actionConfirmationModal.actionConfirmedSubject.unsubscribe();
         this.toastr.error('An error occurred while removing the routine');
       },

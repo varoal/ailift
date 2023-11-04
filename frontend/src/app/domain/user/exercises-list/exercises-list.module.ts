@@ -4,12 +4,8 @@ import { ExercisesListComponent } from './exercises-list.component';
 import { RouterModule } from '@angular/router';
 import { ExercisesModule } from '../../../application/user/modules/exercises/exercises.module';
 
-
-
 @NgModule({
-  declarations: [
-    ExercisesListComponent
-  ],
+  declarations: [ExercisesListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -21,4 +17,4 @@ import { ExercisesModule } from '../../../application/user/modules/exercises/exe
     ExercisesModule,
   ],
 })
-export class ExercisesListModule { }
+export class ExercisesListModule {}

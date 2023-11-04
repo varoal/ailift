@@ -13,8 +13,12 @@ export class WorkoutController {
       const activeWorkout = await this.workoutService.getActiveWorkout(userId);
       res.status(200).json(activeWorkout);
     } catch (error) {
-      console.error('Failed to get active workout:', error);
-      res.status(500).json({ message: 'An error occurred while retrieving the active workout' });
+      console.error("Failed to get active workout:", error);
+      res
+        .status(500)
+        .json({
+          message: "An error occurred while retrieving the active workout",
+        });
     }
   }
 
@@ -61,7 +65,11 @@ export class WorkoutController {
       );
       res.json(startedWorkout);
     } catch (error) {
-      res.status(500).json({message: (error as Error)?.message??"Error starting workout"});
+      res
+        .status(500)
+        .json({
+          message: (error as Error)?.message ?? "Error starting workout",
+        });
     }
   }
 
@@ -145,11 +153,9 @@ export class WorkoutController {
         res.status(404).json({ message: "WorkoutExercise not found" });
       } else {
         console.error(error);
-        res
-          .status(500)
-          .json({
-            message: "An error occurred while adding the set to the exercise.",
-          });
+        res.status(500).json({
+          message: "An error occurred while adding the set to the exercise.",
+        });
       }
     }
   }

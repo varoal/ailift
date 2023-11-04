@@ -5,15 +5,10 @@ import { RouterModule } from '@angular/router';
 import { ExercisesModule } from '../../../../application/user/modules/exercises/exercises.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-import {
-  LinearExerciseModalModule
-} from '../../../../application/user/modules/linear-exercise-modal/linear-exercise-modal.module';
-
+import { LinearExerciseModalModule } from '../../../../application/user/modules/linear-exercise-modal/linear-exercise-modal.module';
 
 @NgModule({
-  declarations: [
-    EditRoutineComponent,
-  ],
+  declarations: [EditRoutineComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([
@@ -29,5 +24,4 @@ import {
     LinearExerciseModalModule,
   ],
 })
-export class EditRoutineModule {
-}
+export class EditRoutineModule {}

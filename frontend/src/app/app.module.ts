@@ -16,7 +16,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
   declarations: [
     AppComponent,
     FullScreenLayoutComponent,
-    LoggedLayoutComponent
+    LoggedLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,5 +37,4 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {
-}
+export class AppModule {}
